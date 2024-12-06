@@ -57,8 +57,8 @@ async def news(message: types.Message):
     *Предстоящие Обновы*: \n 
     _version 0.5_
     1. *Улучшение интерфейса* 
-    2. #empty space
-    3. #empty space
+    2. #empty 
+    3. #empty
     
     """, parse_mode = "Markdown")
 
