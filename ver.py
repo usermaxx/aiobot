@@ -65,12 +65,41 @@ async def news(message: types.Message):
 
 @dp.message(Command('ban'))
 async def ban(message: types.Message):
-     await message.reply("Пользовтель успешно забанен")
+    if message.reply_to_message:
+        replyeduser = message.reply_to_message.from_user
+        username = replyeduser.username
+        await message.answer(f"Пользователь @{username} забанен")
+    else:
+        print('у чела нет юз')
+
+@dp.message(Command('kiss'))
+async def ban(message: types.Message):
+    if message.reply_to_message:
+        replyuser = message.reply_to_message.from_user
+        rusername = replyuser.username
+        user = message.from_user
+        username = user.username
+
+        await message.answer(f"@{user} поцеловал @{rusername}")
+    else:
+        user = message.from_user
+        uz = user.username
+        await message.answer(f'@{uz} поцеловал тут всех @everyone')
+        
 
 
-@dp.message(Command('server'))
+@dp.message(Command('server')) 
 async def ip(message: types.Message):
      await message.answer("DREIX.aternos.me:44838")
+
+@dp.message(lambda message: message.chat.type == "private")
+async def ls(message: types.Message):
+    await message.answer("пр")
+
+
+
+
+
 
 async def sicle():
     while True:
