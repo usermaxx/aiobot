@@ -75,12 +75,12 @@ async def ban(message: types.Message):
 @dp.message(Command('kiss'))
 async def ban(message: types.Message):
     if message.reply_to_message:
-        replyuser = message.reply_to_message.from_user
-        rusername = replyuser.username
+        replyeduser = message.reply_to_message.from_user
+        username = replyeduser.username
         user = message.from_user
         uz = user.username
 
-        await message.answer(f"@{uz} поцеловал @{rusername}")
+        await message.answer(f"@{uz} поцеловал @{username}")
     else:
         user = message.from_user
         uz = user.username
