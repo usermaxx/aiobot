@@ -1,2 +1,2 @@
 aiogram
--soon ai intehration-
+-soon ai integration-
