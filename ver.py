@@ -78,9 +78,9 @@ async def ban(message: types.Message):
         replyuser = message.reply_to_message.from_user
         rusername = replyuser.username
         user = message.from_user
-        username = user.username
+        uz = user.username
 
-        await message.answer(f"@{user} поцеловал @{rusername}")
+        await message.answer(f"@{uz} поцеловал @{rusername}")
     else:
         user = message.from_user
         uz = user.username
