@@ -4,14 +4,28 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 import random
 from datetime import datetime 
+import sqlite3
 
 bot = Bot(token="6810377873:AAGtTn8CUrwtzqAXiMp9Q8uDJrjotOt9G7s")
 dp = Dispatcher()
 
 
+con = sqlite3.connect("shedule.db")
 
+cur = con.cursor()
 
+cur.execute("""CREATE TABLE IF NOT EXISTS shtable(
+        username UNIQUE,
+        monday UNIQUE,
+        tuesday UNIQUE,
+        wednesday UNIQUE,
+        thursday UNIQUE,
+        friday UNIQUE,
+        saturday UNIQUE,
+        sunday UNIQUE,
+        )""")
 
+con.commit()
 
 quotes = ['Обязательно дружите с теми, кто лучше вас. Будете мучиться, но расти.',
              'Ты — это то, что ты делаешь. Ты — это твой выбор. Тот, в кого себя превратишь.',
@@ -91,13 +105,21 @@ async def ban(message: types.Message):
 async def ip(message: types.Message):
      await message.answer("DREIX.aternos.me:44838")
 
+
+
+@dp.message(Command('shedule'))
+async def sh(message: types.Message):
+    at = message.from_user.username
+    id = message.from_user.id
+    cur.execute("INSERT OR IGNORE ")
+    await message.reply(f"тебя зовут {at}, id: {id}")
+
 @dp.message(lambda message: message.chat.type == "private")
 async def ls(message: types.Message):
     await message.answer("пр")
 
 
-
-
+    
 
 
 async def sicle():
