@@ -9,24 +9,6 @@ import sqlite3
 bot = Bot(token="6810377873:AAGtTn8CUrwtzqAXiMp9Q8uDJrjotOt9G7s")
 dp = Dispatcher()
 
-
-con = sqlite3.connect("shedule.db")
-
-cur = con.cursor()
-"""
-cur.execute("""CREATE TABLE IF NOT # EXISTS shtable(
-        username UNIQUE,
-        monday UNIQUE,
-        tuesday UNIQUE,
-        wednesday UNIQUE,
-        thursday UNIQUE,
-        friday UNIQUE,
-        saturday UNIQUE,
-        sunday UNIQUE,
-        )""")
-
-con.commit()
-""" 
 quotes = ['Обязательно дружите с теми, кто лучше вас. Будете мучиться, но расти.',
              'Ты — это то, что ты делаешь. Ты — это твой выбор. Тот, в кого себя превратишь.',
              'Кем бы ты ни был — будь лучше.',
