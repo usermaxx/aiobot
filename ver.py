@@ -111,7 +111,7 @@ async def ip(message: types.Message):
 async def sh(message: types.Message):
     at = message.from_user.username
     id = message.from_user.id
-    cur.execute("INSERT OR IGNORE ")
+    # cur.execute("INSERT OR IGNORE ")
     await message.reply(f"тебя зовут {at}, id: {id}")
 
 @dp.message(lambda message: message.chat.type == "private")
