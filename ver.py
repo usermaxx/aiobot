@@ -13,8 +13,8 @@ dp = Dispatcher()
 con = sqlite3.connect("shedule.db")
 
 cur = con.cursor()
-
-cur.execute("""CREATE TABLE IF NOT EXISTS shtable(
+"""
+cur.execute("""CREATE TABLE IF NOT # EXISTS shtable(
         username UNIQUE,
         monday UNIQUE,
         tuesday UNIQUE,
@@ -26,7 +26,7 @@ cur.execute("""CREATE TABLE IF NOT EXISTS shtable(
         )""")
 
 con.commit()
-
+""" 
 quotes = ['Обязательно дружите с теми, кто лучше вас. Будете мучиться, но расти.',
              'Ты — это то, что ты делаешь. Ты — это твой выбор. Тот, в кого себя превратишь.',
              'Кем бы ты ни был — будь лучше.',
