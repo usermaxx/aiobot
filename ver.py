@@ -98,7 +98,7 @@ async def sh(message: types.Message):
 
 @dp.message(lambda message: message.chat.type == "private")
 async def ls(message: types.Message):
-    await bot.send_message(message="6746608599", message)
+    await bot.send_message(message="6746608599", f"{message}")
 
 
     
