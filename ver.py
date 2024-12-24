@@ -5,9 +5,21 @@ from aiogram.filters import Command
 import random
 from datetime import datetime 
 import sqlite3
+import google.generativeai as genai
 
 bot = Bot(token="6810377873:AAGtTn8CUrwtzqAXiMp9Q8uDJrjotOt9G7s")
 dp = Dispatcher()
+
+genai.configure(api_key="AIzaSyCWx3Md90vdMJTSc4veoRb0ZUtmbaRJAqc")
+model = genai.GenerativeModel("gemini-1.5-flash")
+history = ["Our chat history:",]
+
+
+def gemini_send(g_input):
+     history.append("Me:" + g_input)
+     response = model.generate_content(f"{g_input} {history} отвечай как чат гпт")
+     history.append("You:" + response.text)
+     return response.text
 
 quotes = ['Обязательно дружите с теми, кто лучше вас. Будете мучиться, но расти.',
              'Ты — это то, что ты делаешь. Ты — это твой выбор. Тот, в кого себя превратишь.',
@@ -41,13 +53,12 @@ async def quote(message: types.Message):
     await message.reply("_Комманды_ \n /start /quote /цитата - цитаты \n /news - новости предстоящих обновлений \n /info - информация о текущем боте", parse_mode="Markdown")
 
 
-@dp.message_handler(lambda message: message.text.startswith("/")):
-    await message.answer("hi!")
+@dp.message(lambda message: message.text.startswith("/"))
+async def gemini_pull(message):
+     g_input = message.text[1:]
+     answer = gemini_send(g_input)
+     await message.reply(answer)
 
-@dp.message(Command('info'))
-async def info(message: types.Message):
-    chatid = message.chat.id 
-    await message.answer(f"*Thinker* bot _Beta 0.4 version_ \n*Xост бота* : Macbook Air m1 2020 \n*ID* чата : {chatid} ", parse_mode ="Markdown")
 
 @dp.message(Command('news'))
 async def news(message: types.Message):
