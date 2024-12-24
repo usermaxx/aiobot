@@ -41,6 +41,8 @@ async def quote(message: types.Message):
     await message.reply("_Комманды_ \n /start /quote /цитата - цитаты \n /news - новости предстоящих обновлений \n /info - информация о текущем боте", parse_mode="Markdown")
 
 
+@dp.message_handler(lambda message: botstartswith("/")):
+    await message.answer("hi!")
 
 @dp.message(Command('info'))
 async def info(message: types.Message):
