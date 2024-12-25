@@ -1,2 +1,4 @@
 aiogram
--soon ai integration-
+asyncio
+google.generativeai
+
