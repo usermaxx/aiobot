@@ -10,15 +10,15 @@ import google.generativeai as genai
 bot = Bot(token="6810377873:AAGtTn8CUrwtzqAXiMp9Q8uDJrjotOt9G7s")
 dp = Dispatcher()
 
-genai.configure(api_key="AIzaSyCWx3Md90vdMJTSc4veoRb0ZUtmbaRJAqc")
+genai.configure(api_key="AIzaSyA-X1rDXanqHpoL3tJ96V7CCMK1rHJh7Mg")
 model = genai.GenerativeModel("gemini-1.5-flash")
-history = ["Our chat history:",]
-
-
-def gemini_send(g_input):
-     history.append("Me:" + g_input)
-     response = model.generate_content(f"{g_input} {history} отвечай как чат гпт")
-     history.append("You:" + response.text)
+history = ["Chat history:",]
+role = None
+def gemini_send(g_input, message):
+     history.append(f"{g_input}")
+     response = model.generate_content(f"@{g_input}  {history}  {role} (максмум 150 слов). даю разрешение использовать нецензурные лексики в напряженных ситуациях")
+     print(response.text)
+     history.append("You responsed:" + response.text)
      return response.text
 
 quotes = ['Обязательно дружите с теми, кто лучше вас. Будете мучиться, но расти.',
@@ -44,19 +44,39 @@ quotes = ['Обязательно дружите с теми, кто лучше 
              'Либо вы поднимитесь вверх на одну ступень сегодня, или соберитесь с силами, чтобы подняться на эту ступень завтра.',
              ]
 
+@dp.message(Command('roles'))
+async def airole(message: types.Message):
+    await message.answer(f"Thinker Role: \n {role}")
+@dp.message(lambda message: message.text.startswith('!role'))
+async def setrole(message: types.Message):
+    global history
+    global role
+    history = ["Chat History:"]
+    role = message.text[5:]
+    await message.answer(f'Role: \n {role} \n setted up ')
 @dp.message(Command('quote', 'start', 'цитата'))
 async def start(message: types.Message):
     quote = random.choice(quotes)
+    response = model.generate_content(f" отвечай коротко и ясно")
     await message.reply(quote)
 @dp.message(Command('help'))
 async def quote(message: types.Message):
     await message.reply("_Комманды_ \n /start /quote /цитата - цитаты \n /news - новости предстоящих обновлений \n /info - информация о текущем боте", parse_mode="Markdown")
 
 
-@dp.message(lambda message: message.text.startswith("/"))
+@dp.message(Command('cleanhistory'))
+async def cleanchat(message: types.Message):
+    global history
+    history = ["Chat History:"]
+    await message.answer("Chat history cleaned.")
+
+
+@dp.message(lambda message: message.text.startswith(("!", "/")))
 async def gemini_pull(message):
-     g_input = message.text[1:]
-     answer = gemini_send(g_input)
+     userinfo = message.from_user.username
+     print(userinfo)
+     g_input = f"@{userinfo}: {message.text[1:]}"
+     answer = gemini_send(g_input, message)
      await message.reply(answer)
 
 
