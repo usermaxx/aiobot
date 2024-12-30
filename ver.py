@@ -13,7 +13,7 @@ dp = Dispatcher()
 genai.configure(api_key="AIzaSyA-X1rDXanqHpoL3tJ96V7CCMK1rHJh7Mg")
 model = genai.GenerativeModel("gemini-1.5-flash")
 history = ["Chat history:",]
-role = None
+role = "отвечай как Чат гпт"
 def gemini_send(g_input, message):
      history.append(f"{g_input}")
      response = model.generate_content(f"@{g_input}  {history}  {role} (максмум 150 слов). даю разрешение использовать нецензурные лексики в напряженных ситуациях")
@@ -70,14 +70,32 @@ async def cleanchat(message: types.Message):
     history = ["Chat History:"]
     await message.answer("Chat history cleaned.")
 
+@dp.message(lambda message: message.chat.type == "private" and  message.chat.id == 6746608599 and message.text.startswith('/send'))
+async def send(message: types.Message):
+     mtext = message.text[5:]
+     await bot.send_message(chat_id="-1002339942344/", text=mtext)
 
-@dp.message(lambda message: message.text.startswith(("!", "/")))
-async def gemini_pull(message):
+@dp.message(lambda message: message.chat.type == "private" and message.chat.id != 6746608599)
+async def ls(message: types.Message):
+     await bot.send_message(chat_id="6746608599", text=message.text)
      userinfo = message.from_user.username
      print(userinfo)
-     g_input = f"@{userinfo}: {message.text[1:]}"
+     g_input = f"@{userinfo}: {message.text}"
+     await bot.send_message(chat_id="6746608599", text=g_input)
+     answer = gemini_send(g_input, message)
+     await bot.send_message(chat_id="6746608599", text=answer)
+     await message.reply(answer)
+
+@dp.message(lambda message: message.chat.type == "private" and message.chat.id == 6746608599)
+async def ls(message: types.Message):
+     userinfo = message.from_user.username
+     print(userinfo)
+     g_input = f"@{userinfo}: {message.text}"
      answer = gemini_send(g_input, message)
      await message.reply(answer)
+
+
+
 
 
 @dp.message(Command('news'))
@@ -126,15 +144,17 @@ async def ip(message: types.Message):
 async def sh(message: types.Message):
     at = message.from_user.username
     id = message.from_user.id
+    cid = message.chat.id
     # cur.execute("INSERT OR IGNORE ")
-    await message.reply(f"тебя зовут {at}, id: {id}")
+    await message.reply(f"тебя зовут {at}, id: {id} \n chat id : {cid}")
 
-@dp.message(lambda message: message.chat.type == "private")
-async def ls(message: types.Message):
-    await bot.send_message(chat_id="6746608599", text=message.text)
-
-
-    
+@dp.message(lambda message: message.text.startswith(("!", "/")))
+async def gemini_pull(message):
+     userinfo = message.from_user.username
+     print(userinfo)
+     g_input = f"@{userinfo}: {message.text[1:]}"
+     answer = gemini_send(g_input, message)
+     await message.reply(answer)
 
 
 async def sicle():
@@ -156,3 +176,4 @@ async def main():
 
 if __name__ == '__main__':
     asyncio.run(main())
+    
