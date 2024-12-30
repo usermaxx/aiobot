@@ -160,11 +160,12 @@ async def gemini_pull(message):
 async def sicle():
     while True:
         watch = datetime.now()
-        if watch.hour == 23 and watch.minute == 24:
-                   print('KABOOM')
-                   a = '-1002339942344'
-                   await bot.send_message(chat_id=a, text="Итоги дня: \nСултан 102 очка \nРизат 0 \nРафик 0")
-                   await asyncio.sleep(60)
+        if watch.hour == 22 and watch.minute ==  30:
+            response = model.generate_content(" Время 10:30 вечера, напиши спокойной ночи с советами  (чтобы было читаемо на телефоне)  [Рафик - цель быть в списках Forbes, минусы - лудоман, Султан - Стать совершенным минусы - слишком ленивый к распорядке дня который сам сделал, Ризат - цель незнаем, минусы - не думает о цели и жизни игроман без ноутбука.  даю разрешение использовать нецензурные лексики в напряженных ситуация")
+            
+            print(response.text)
+            await bot.send_message(chat_id="-1002339942344", text=f"{response.text}")
+            await asyncio.sleep(60)
         await asyncio.sleep(2)
 
 
