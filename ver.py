@@ -3,9 +3,11 @@ import aiogram
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 import random
+from aiogram.types import ContentType
 from datetime import datetime 
 import sqlite3
 import google.generativeai as genai
+from aiogram import F
 
 bot = Bot(token="6810377873:AAGtTn8CUrwtzqAXiMp9Q8uDJrjotOt9G7s")
 dp = Dispatcher()
@@ -44,10 +46,12 @@ quotes = ['Обязательно дружите с теми, кто лучше 
              'Либо вы поднимитесь вверх на одну ступень сегодня, или соберитесь с силами, чтобы подняться на эту ступень завтра.',
              ]
 
+
+
 @dp.message(Command('roles'))
 async def airole(message: types.Message):
     await message.answer(f"Thinker Role: \n {role}")
-@dp.message(lambda message: message.text.startswith('!role'))
+@dp.message(lambda message: message.text and message.text.startswith('!role'))
 async def setrole(message: types.Message):
     global history
     global role
@@ -59,9 +63,13 @@ async def start(message: types.Message):
     quote = random.choice(quotes)
     response = model.generate_content(f" отвечай коротко и ясно")
     await message.reply(quote)
+
+
 @dp.message(Command('help'))
 async def quote(message: types.Message):
     await message.reply("_Комманды_ \n /start /quote /цитата - цитаты \n /news - новости предстоящих обновлений \n /info - информация о текущем боте", parse_mode="Markdown")
+
+
 
 
 @dp.message(Command('cleanhistory'))
@@ -70,10 +78,16 @@ async def cleanchat(message: types.Message):
     history = ["Chat History:"]
     await message.answer("Chat history cleaned.")
 
+
+
+
 @dp.message(lambda message: message.chat.type == "private" and  message.chat.id == 6746608599 and message.text.startswith('/send'))
 async def send(message: types.Message):
      mtext = message.text[5:]
      await bot.send_message(chat_id="-1002339942344/", text=mtext)
+
+
+
 
 @dp.message(lambda message: message.chat.type == "private" and message.chat.id != 6746608599)
 async def ls(message: types.Message):
@@ -148,6 +162,8 @@ async def sh(message: types.Message):
     # cur.execute("INSERT OR IGNORE ")
     await message.reply(f"тебя зовут {at}, id: {id} \n chat id : {cid}")
 
+
+
 @dp.message(lambda message: message.text.startswith(("!", "/")))
 async def gemini_pull(message):
      userinfo = message.from_user.username
@@ -155,7 +171,6 @@ async def gemini_pull(message):
      g_input = f"@{userinfo}: {message.text[1:]}"
      answer = gemini_send(g_input, message)
      await message.reply(answer)
-
 
 async def sicle():
     while True:
