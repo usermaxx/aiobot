@@ -81,11 +81,7 @@ async def cleanchat(message: types.Message):
 
 
 
-@dp.message(lambda message: message.chat.type == "private" and  message.chat.id == 6746608599 and message.text.startswith('/sharks'))
-async def send(message: types.Message):
-     mtext = message.text[5:]
-     response = model.generate_content(f"Твоя задача отвечать как Советчик в телеграм канале  : {mtext}  даю разрешение использовать нецензурные лексики")
-     await bot.send_message(chat_id="2350053550", text=response.text)
+
 
 
 
